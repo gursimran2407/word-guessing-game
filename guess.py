@@ -11,8 +11,12 @@ class Guess():
         self.words_list = StringDatabase().load_file()
         self.random_word = self.get_random_word()
         self.game_Obj = []
+        self.tuple_word = ['-', '-', '-', '-']
         self.bad_guesses = 0
         self.missed_letters = 0
+        self.game_count = 1
+        self.status = None
+        self.end_game = False
 
 
     def get_random_word(self):
@@ -20,17 +24,18 @@ class Guess():
         print(self.random_word)
         return self.random_word
 
-    def print_current_guess(self, one, two, three, four):
-        tuple_word = (one, two, three, four)
-        print("Current Guess: {}{}{}{}".format(tuple_word[0], tuple_word[1], tuple_word[2], tuple_word[3]))
+    def set_tuple_letter(self, index, letter):
+        self.tuple_word[index] = letter
 
+    def print_tuple_current_guess(self):
+        print("Current Guess: ",self.tuple_word)
 
     def print_menu(self):
         loop = 1
         while loop == 1:
 
             print("***** The great guessing game *****\n\n")
-            self.print_current_guess('-', '-', '-', '-')
+            self.print_tuple_current_guess()
             print("\n\ng = guess, t = tell me, l for a letter, and q to quit\n")
             ans = input("Please select a choice.")
 
@@ -51,30 +56,27 @@ class Guess():
         guessed_word = input('Enter the whole word.')
         if guessed_word==self.random_word:
             print("You Guessed it!")
-            print('The word is: "{}"!\nWant to Play Again?'.format(self.random_word))
+            print('The word is: "{}"!\n'.format(self.random_word))
         else:
             print("Wrong! Sorry try again!")
+            self.bad_guesses += 1
 
     def guess_letter(self):
         letter = input('Enter a letter.')
+        index = self.random_word.index(letter)
         if letter in self.random_word:
-            print("You found 1 letter! at position: {}".format(self.random_word.index(letter)))
+            print("You found 1 letter! at position: {}".format(index))
+            self.set_tuple_letter(index, letter)
+            self.print_tuple_current_guess()
 
         if letter not in self.random_word:
             print("Sorry no such letter found!")
-            if self.missed_letters > 0:
-                self.missed_letters += 1
+
+            self.missed_letters += 1
 
 
     def create_new_game_obj(self):
         self.game_Obj.append(Game())
-
-
-
-
-
-
-
 
 
 
