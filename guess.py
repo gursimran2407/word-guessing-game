@@ -25,14 +25,23 @@ class Guess():
 
     def set_tuple_letter(self, index, letter):
         self.tuple_word[index] = letter
+        temp_word = ''
+        for w in self.tuple_word:
+            temp_word += w
+
+        if temp_word == self.random_word:
+            self.status = 'Success'
 
     def print_tuple_current_guess(self):
-        print("Current Guess: ",self.tuple_word)
+        print("Current Guess: ", self.tuple_word)
 
     def print_menu(self):
         self.get_random_word()
+
         loop = 1
         while loop == 1:
+            if self.status:
+                self.end_game
 
             print("***** The great guessing game *****\n\n")
             self.print_tuple_current_guess()
@@ -54,17 +63,18 @@ class Guess():
     def guess_word(self):
         print("""** The great guessing game **\n\n""")
         guessed_word = input('Enter the whole word.')
-        if guessed_word==self.random_word:
+        if guessed_word == self.random_word:
             print("You Guessed it!")
             print('The word is: "{}"!\n'.format(self.random_word))
+            self.status = 'Success'
         else:
             print("Wrong! Sorry try again!")
             self.bad_guesses += 1
 
     def guess_letter(self):
-        letter = input('Enter a letter.')
+        letter = input('\n\nEnter a letter.')
         indexes = [index for index, element in enumerate(self.random_word) if element == letter]
-        print(indexes)
+        #print(indexes)
         if letter in self.random_word:
             print("You found {} letter(s)! : ".format(len(indexes)))
             if len(indexes) > 1:
