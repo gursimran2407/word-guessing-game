@@ -9,7 +9,7 @@ from stringDatabase import StringDatabase
 class Guess():
     def __init__(self):
         self.words_list = StringDatabase().load_file()
-        self.random_word = self.get_random_word()
+        self.random_word = "random"
         self.game_Obj = []
         self.tuple_word = ['-', '-', '-', '-']
         self.bad_guesses = 0
@@ -22,7 +22,6 @@ class Guess():
     def get_random_word(self):
         self.random_word = random.choice(self.words_list)
         print(self.random_word)
-        return self.random_word
 
     def set_tuple_letter(self, index, letter):
         self.tuple_word[index] = letter
@@ -31,6 +30,7 @@ class Guess():
         print("Current Guess: ",self.tuple_word)
 
     def print_menu(self):
+        self.get_random_word()
         loop = 1
         while loop == 1:
 
@@ -63,15 +63,18 @@ class Guess():
 
     def guess_letter(self):
         letter = input('Enter a letter.')
-        index = self.random_word.index(letter)
+        indexes = [index for index, element in enumerate(self.random_word) if element == letter]
+        print(indexes)
         if letter in self.random_word:
-            print("You found 1 letter! at position: {}".format(index))
-            self.set_tuple_letter(index, letter)
-            self.print_tuple_current_guess()
+            print("You found {} letter(s)! : ".format(len(indexes)))
+            if len(indexes) > 1:
+                for i in indexes:
+                    self.set_tuple_letter(i, letter)
+            else:
+                self.set_tuple_letter(self.random_word.find(letter), letter)
 
-        if letter not in self.random_word:
+        else:
             print("Sorry no such letter found!")
-
             self.missed_letters += 1
 
 
