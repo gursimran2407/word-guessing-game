@@ -1,6 +1,8 @@
 import random
 import sys
 
+from prettytable import PrettyTable
+
 from game import Game
 from stringDatabase import StringDatabase
 
@@ -92,7 +94,7 @@ class Guess:
                 self.end_game = True
 
             elif ans == 'q':
-                sys.exit()
+                self.quit_func()
 
     def guess_word(self):
 
@@ -120,6 +122,16 @@ class Guess:
         else:
             print("Sorry no such letter found!")
             self.missed_letters += 1
+
+    def quit_func(self):
+        print("Sorry to See you go! Here is your Game Summary:\n\n")
+        print('Game\tWord\t\tStatus\t   Bad_Guesses\t  Missed_Letters\t  Score\n')
+        print('-'*90)
+
+        for o in self.game_Obj:
+            print(str(o)+'\n')
+
+        sys.exit()
 
     def create_new_game_obj(self):
         gameObj = Game()

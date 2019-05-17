@@ -56,10 +56,15 @@ class Game:
         self._score = score
 
     def __str__(self):
-        string = 'GameObject(game_number: '+str(self._game) + \
-                 ' ,word ='+self._word+' ,status ='+self._status+' ,bad_guesses ='+str(self._bad_guesses)\
-                 +' ,missed_letters ='+str(self._missed_letters)+' ,score ='+str(self._score)\
-                 + ')'
+        # string = 'GameObject(game_number: '+str(self._game) + \
+        #          ' ,word ='+self._word+' ,status ='+self._status+' ,bad_guesses ='+str(self._bad_guesses)\
+        #          +' ,missed_letters ='+str(self._missed_letters)+' ,score ='+str(self._score)\
+        #          + ')'
+
+        string = '  '+str(self._game) + '\t\t'+\
+                 self._word+'\t\t'+self._status+'\t\t\t\t'+str(self._bad_guesses) \
+                 + '\t\t\t  ' + str(self._missed_letters)+'\t\t\t\t' + str(self._score)
+
         return string
 
 
