@@ -1,12 +1,11 @@
-import sys
 import random
-
+import sys
 
 from game import Game
 from stringDatabase import StringDatabase
 
 
-class Guess():
+class Guess:
     def __init__(self):
         self.words_list = StringDatabase().load_file()
         self.random_word = "random"
@@ -17,7 +16,6 @@ class Guess():
         self.game_count = 1
         self.status = None
         self.end_game = False
-
 
     def get_random_word(self):
         self.random_word = random.choice(self.words_list)
@@ -31,19 +29,53 @@ class Guess():
 
         if temp_word == self.random_word:
             self.status = 'Success'
+            self.end_game = True
+
+    def end_game_func(self):
+        self.create_new_game_obj()
+        self.game_count += 1
+        self.tuple_word = ['-', '-', '-', '-']
+        self.status = None
+        self.end_game = True
+        self.get_random_word()
+        self.bad_guesses = 0
+        self.missed_letters = 0
 
     def print_tuple_current_guess(self):
         print("Current Guess: ", self.tuple_word)
 
+    @staticmethod
+    def print_gave_up(self):
+        print('$' * 50)
+        print('You Gave Up! \n Want to Play Again?\nThe word was: "{}"'.format(self.random_word))
+        print('%' * 50)
+
+    @staticmethod
+    def print_success(self):
+        print('$' * 50)
+        print('SUCCESS! You Guessed It!\nThe word is: "{}"\n Want to Play Again?'.format(self.random_word))
+        print('%' * 50)
+
     def print_menu(self):
         self.get_random_word()
-
         loop = 1
         while loop == 1:
-            if self.status:
-                self.end_game
+            if self.status == 'Success':
+                self.print_success(self)
+                self.end_game_func()
 
-            print("***** The great guessing game *****\n\n")
+            if self.status == 'Gave up':
+                self.print_gave_up(self)
+                self.end_game_func()
+
+            for o in self.game_Obj:
+                print(o)
+
+            self.end_game = False
+
+            print('*' * 20 +
+                  ' The great guessing game ' +
+                  '*' * 20 + '\n')
             self.print_tuple_current_guess()
             print("\n\ng = guess, t = tell me, l for a letter, and q to quit\n")
             ans = input("Please select a choice.")
@@ -55,13 +87,15 @@ class Guess():
                 self.guess_word()
 
             elif ans == 't':
-               print('The word is: "{}"\n'.format(self.random_word))
+                print('The word is: "{}"\n'.format(self.random_word))
+                self.status = 'Gave up'
+                self.end_game = True
 
             elif ans == 'q':
                 sys.exit()
 
     def guess_word(self):
-        print("""** The great guessing game **\n\n""")
+
         guessed_word = input('Enter the whole word.')
         if guessed_word == self.random_word:
             print("You Guessed it!")
@@ -74,7 +108,7 @@ class Guess():
     def guess_letter(self):
         letter = input('\n\nEnter a letter.')
         indexes = [index for index, element in enumerate(self.random_word) if element == letter]
-        #print(indexes)
+        # print(indexes)
         if letter in self.random_word:
             print("You found {} letter(s)! : ".format(len(indexes)))
             if len(indexes) > 1:
@@ -87,14 +121,18 @@ class Guess():
             print("Sorry no such letter found!")
             self.missed_letters += 1
 
-
     def create_new_game_obj(self):
-        self.game_Obj.append(Game())
+        gameObj = Game()
+        gameObj.bad_guesses = self.bad_guesses
+        gameObj.game_number = self.game_count
+        gameObj.words = self.random_word
+        gameObj.missed_letterss = self.missed_letters
+        gameObj.statuss = self.status
 
-
+        self.game_Obj.append(gameObj)
 
 
 if __name__ == '__main__':
-
     guess_game = Guess()
+
     guess_game.print_menu()

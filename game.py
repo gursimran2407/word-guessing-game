@@ -55,6 +55,14 @@ class Game:
     def scores(self, score):
         self._score = score
 
+    def __str__(self):
+        string = 'GameObject(game_number: '+str(self._game) + \
+                 ' ,word ='+self._word+' ,status ='+self._status+' ,bad_guesses ='+str(self._bad_guesses)\
+                 +' ,missed_letters ='+str(self._missed_letters)+' ,score ='+str(self._score)\
+                 + ')'
+        return string
+
+
 
 
 
