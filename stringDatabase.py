@@ -1,5 +1,21 @@
+"""
+    File name: stringDatabase.py
+    Author: Gursimran Singh
+    Python Version: 3.7
+    Date Created: 17/05/2019
+"""
+
+
 class StringDatabase:
+    """Class to represent a String Database which manages the IO of the Guess Game
+
+    Attributes:
+        word (str): The list of words from the file
+        _frequencies: The list of frequencies of alphabets
+    """
     def __init__(self):
+        """StringDatabase init method
+        """
         self.word = []
         self._frequencies = {
             "a": "8.17",
@@ -31,6 +47,8 @@ class StringDatabase:
         }
 
     def load_file(self):
+        """StringDatabase load_file method
+        """
         self.file = open("four_letters.txt",'r')
         for line in self.file:
             for word in line.strip('\n').split(" "):
@@ -39,6 +57,8 @@ class StringDatabase:
 
 
     def get_frequencies(self):
+        """StringDatabase get_frequencies method
+        """
         return self._frequencies
 
 
