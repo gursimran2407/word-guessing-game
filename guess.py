@@ -21,7 +21,6 @@ class Guess:
         self.total_score = 0
         self.frequency_words = StringDatabase().get_frequencies()
         self.number_of_times_letter_requested = 0
-        self.found_letters = []
 
     def get_random_word(self):
         self.random_word = random.choice(self.words_list)
@@ -46,6 +45,7 @@ class Guess:
         self.get_random_word()
         self.bad_guesses = 0
         self.missed_letters = 0
+        self.total_score = 0
 
     def print_tuple_current_guess(self):
         print("Current Guess: ", self.tuple_word)
@@ -71,15 +71,22 @@ class Guess:
         for l in temp_w:
             self.total_score -= round(float(self.frequency_words[l]), 2)
 
-    def cal_success_score(self):
+    def cal_score(self):
         index = []
         for w, i in zip(self.tuple_word, range(len(self.tuple_word))):
             if w == '-':
                 index.append(i)
 
-        print(index,'r'*10)
         for i in index:
             self.total_score += round(float(self.frequency_words[self.random_word[i]]), 2)
+
+    def cal_success_score(self):
+
+        if self.number_of_times_letter_requested > 0:
+            self.total_score = self.total_score+1/self.number_of_times_letter_requested
+
+        for i in range(self.bad_guesses):
+            self.total_score *= 0.9
 
     def print_menu(self):
         self.get_random_word()
@@ -114,6 +121,7 @@ class Guess:
             elif ans == 't':
                 print('The word is: "{}"\n'.format(self.random_word))
                 self.status = 'Gave up'
+                self.cal_score()
                 self.calc_gaveup_score()
                 self.end_game = True
 
@@ -130,6 +138,7 @@ class Guess:
             print("You Guessed it!")
             print('The word is: "{}"!\n'.format(self.random_word))
             self.status = 'Success'
+            self.cal_score()
             self.cal_success_score()
         else:
             print("Wrong! Sorry try again!")
@@ -139,11 +148,10 @@ class Guess:
         self.number_of_times_letter_requested += 1
         letter = input('\n\nEnter a letter.')
         indexes = [index for index, element in enumerate(self.random_word) if element == letter]
+        count = 1
         # print(indexes)
         if letter in self.random_word:
             print("You found {} letter(s)! : ".format(len(indexes)))
-            self.found_letters.append(letter)
-
             if len(indexes) > 1:
                 for i in indexes:
                     self.set_tuple_letter(i, letter)
