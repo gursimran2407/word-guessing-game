@@ -96,6 +96,9 @@ class Guess:
             elif ans == 'q':
                 self.quit_func()
 
+            else:
+                print("Wrong choice Selected! Please Try again!")
+
     def guess_word(self):
 
         guessed_word = input('Enter the whole word.')

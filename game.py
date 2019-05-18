@@ -63,7 +63,7 @@ class Game:
 
         string = '  '+str(self._game) + '\t\t'+\
                  self._word+'\t\t'+self._status+'\t\t\t\t'+str(self._bad_guesses) \
-                 + '\t\t\t  ' + str(self._missed_letters)+'\t\t\t\t' + str(self._score)
+                 + '\t\t\t  ' + str(self._missed_letters)+'\t\t\t  ' + str(self._score)
 
         return string
 
